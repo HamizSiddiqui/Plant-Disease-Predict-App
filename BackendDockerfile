@@ -1,0 +1,19 @@
+FROM python:3.11.9
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+
+# Copy the rest of the application code into the container
+COPY app /app
+
+# Optional: create model directory (useful if running image directly without volume)
+RUN mkdir -p /model
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
